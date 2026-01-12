@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <object id="main_window" class="GtkWindow">
+        <property name="title">NEdit</property>
+        <property name="default-width">640</property>
+        <property name="default-height">480</property>
+
+        <child>
+            <object id="main_box" class="GtkBox">
+                <property name="orientation">GTK_ORIENTATION_VERTICAL</property>
+
+                <child>
+                    <object id="menu_box" class="GtkBox">
+                        <child>
+                            <object class="GtkMenuButton">
+                                <property name="label">File</property>
+                                <property name="popover">
+                                    <object class="GtkPopoverMenu">
+                                        <property name="menu-model">
+                                            <menu>
+                                                <section>
+                                                    <item>
+                                                        <attribute name='label' translatable='yes'>New</attribute>
+                                                        <attribute name='action'>app.file-new</attribute>
+                                                    </item>
+                                                    <item>
+                                                        <attribute name='label' translatable='yes'>Open...</attribute>
+                                                        <attribute name='action'>app.file-open</attribute>
+                                                    </item>
+                                                    <item>
+                                                        <attribute name='label' translatable='yes'>Reload</attribute>
+                                                        <attribute name='action'>app.file-reload</attribute>
+                                                    </item>
+                                                    <item>
+                                                        <attribute name='label' translatable='yes'>Save</attribute>
+                                                        <attribute name='action'>app.file-save</attribute>
+                                                    </item>
+                                                    <item>
+                                                        <attribute name='label' translatable='yes'>Save As...</attribute>
+                                                        <attribute name='action'>app.file-save-as</attribute>
+                                                    </item>
+                                                </section>
+                                            </menu>
+                                        </property>
+                                    </object>
+                                </property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkScrolledWindow">
+                        <property name="vexpand">TRUE</property>
+
+                        <child>
+                            <object id="file_text_view" class="GtkTextView"/>
+                        </child>
+                    </object>
+                </child>
+            </object>
+        </child>
+    </object>
+</interface>
