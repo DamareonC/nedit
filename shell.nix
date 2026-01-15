@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> { } }:
 pkgs.callPackage (
-    { mkShell, gtk4, gcc, clang, gnumake, ninja, pkg-config, cmake }:
+    { mkShell, gtk4, gcc, clang, gdb, lldb, gnumake, ninja, pkg-config, cmake }:
     mkShell
     {
         strictDeps = true;
@@ -12,6 +12,8 @@ pkgs.callPackage (
         nativeBuildInputs = [
             gcc
             clang
+            gdb
+            lldb
             gnumake
             ninja
             pkg-config
