@@ -2,11 +2,20 @@
 
 int main(int argc, char* argv[])
 {
+    struct AppData app_data = {
+        .file_name = g_malloc0(sizeof(char)),
+        .file_path = g_malloc0(sizeof(char)),
+        .file_content = g_malloc0(sizeof(char)),
+        .unsaved_type = NONE
+    };
+
     GtkApplication* const app = gtk_application_new("app.nedit", G_APPLICATION_DEFAULT_FLAGS);
-    g_signal_connect(app, "activate", G_CALLBACK(init_app), NULL);
-
+    g_signal_connect(app, "activate", G_CALLBACK(init_app), &app_data);
     const int status = g_application_run(G_APPLICATION(app), argc, argv);
+    
     g_object_unref(app);
-
+    g_free(app_data.file_name);
+    g_free(app_data.file_path);
+    g_free(app_data.file_content);
     return status;
 }

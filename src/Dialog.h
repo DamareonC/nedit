@@ -2,4 +2,5 @@
 
 #include "AppData.h"
 
-void file_new_dialog(struct AppData* const app_data);
+void file_open_dialog(struct AppData* const app_data);
+void file_unsaved_dialog(struct AppData* const app_data);

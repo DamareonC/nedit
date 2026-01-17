@@ -4,3 +4,5 @@
 
 void init_file_menu(GtkApplication* const app, struct AppData* const app_data);
 void new_file(struct AppData* const app_data);
+void open_file(GFile* const file, struct AppData* const app_data);
+bool is_unsaved(struct AppData* const app_data);
