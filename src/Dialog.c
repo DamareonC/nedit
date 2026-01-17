@@ -18,7 +18,12 @@ static void file_unsaved_dialog_finished(GObject* const object, GAsyncResult* co
     {
         if (result == 0)
         {
-            //Save function here
+            const bool file_saved = save_file(app_data);
+
+            if (!file_saved)
+            {
+                return;
+            }
         }
 
         switch (app_data->unsaved_type)
@@ -27,16 +32,16 @@ static void file_unsaved_dialog_finished(GObject* const object, GAsyncResult* co
                 exit(EXIT_SUCCESS);
                 break;
             case NEW:
-                app_data->unsaved_type = NONE;
                 new_file(app_data);
                 break;
             case OPEN:
-                app_data->unsaved_type = NONE;
                 file_open_dialog(app_data);
                 break;
             default:
                 break;
         }
+
+        app_data->unsaved_type = NONE;
     }
 }
 

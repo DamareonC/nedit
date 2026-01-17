@@ -1,6 +1,17 @@
 #include "Dialog.h"
 #include "FileUtil.h"
 
+static char* get_buffer_text(const struct AppData* const app_data)
+{
+    GtkTextIter start;
+    gtk_text_buffer_get_start_iter(app_data->text_buffer, &start);
+
+    GtkTextIter end;
+    gtk_text_buffer_get_end_iter(app_data->text_buffer, &end);
+
+    return gtk_text_buffer_get_text(app_data->text_buffer, &start, &end, false);
+}
+
 static void file_new(GSimpleAction* const action, GVariant* const param, const gpointer data)
 {
     struct AppData* const app_data = data;
@@ -31,11 +42,35 @@ static void file_open(GSimpleAction* const action, GVariant* const param, const 
     }
 }
 
+static void file_save(GSimpleAction* const action, GVariant* const param, const gpointer data)
+{
+    struct AppData* const app_data = data;
+
+    if (!is_unsaved(app_data))
+    {
+        return;
+    }
+
+    if (g_str_equal(app_data->file_name, "") || g_str_equal(app_data->file_path, ""))
+    {
+        //Save as function here
+    }
+    else
+    {
+        if (save_file(app_data))
+        {
+            g_free(app_data->file_content);
+            app_data->file_content = get_buffer_text(app_data);
+        }
+    }
+}
+
 void init_file_menu(GtkApplication* const app, struct AppData* const app_data)
 {
     const GActionEntry action_entries[] = {
         { "file-new", file_new, NULL, NULL, NULL },
-        { "file-open", file_open, NULL, NULL, NULL }
+        { "file-open", file_open, NULL, NULL, NULL },
+        { "file-save", file_save, NULL, NULL, NULL }
     };
 
     g_action_map_add_action_entries(G_ACTION_MAP(app), action_entries, G_N_ELEMENTS(action_entries), app_data);
@@ -75,16 +110,34 @@ void open_file(GFile* const file, struct AppData* const app_data)
     }
 }
 
-bool is_unsaved(struct AppData* const app_data)
+bool save_file(const struct AppData* const app_data)
 {
-    GtkTextIter start;
-    gtk_text_buffer_get_start_iter(app_data->text_buffer, &start);
+    char* const full_path = g_strconcat(app_data->file_path, "/", app_data->file_name, NULL);
+    GFile* const file = g_file_new_for_path(full_path);
+    char* const buffered_file_content = get_buffer_text(app_data);
+    const glong content_length = g_utf8_strlen(buffered_file_content, -1);
+    
+    if (g_file_replace_contents(file, buffered_file_content, content_length, NULL, false, G_FILE_CREATE_NONE, NULL, NULL, NULL))
+    {
+        return true;
+    }
+    else
+    {
+        GtkAlertDialog* const alert_dialog = gtk_alert_dialog_new("Could not save the file.");
+        gtk_alert_dialog_show(alert_dialog, app_data->window);
+        
+        g_object_unref(alert_dialog);
+    }
 
-    GtkTextIter end;
-    gtk_text_buffer_get_end_iter(app_data->text_buffer, &end);
+    g_free(buffered_file_content);
+    g_free(full_path);
+    return false;
+}
 
-    char* const buffered_file_content = gtk_text_buffer_get_text(app_data->text_buffer, &start, &end, false);
-    bool result = !g_str_equal(app_data->file_content, buffered_file_content);
+bool is_unsaved(const struct AppData* const app_data)
+{
+    char* const buffered_file_content = get_buffer_text(app_data);
+    const bool result = !g_str_equal(app_data->file_content, buffered_file_content);
 
     g_free(buffered_file_content);
     return result;
