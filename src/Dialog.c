@@ -1,47 +1,77 @@
 #include "Dialog.h"
 #include "FileUtil.h"
 
+static void unsaved_action(struct AppData* const app_data)
+{
+    switch (app_data->unsaved_type)
+    {
+        case CLOSE:
+            exit(EXIT_SUCCESS);
+            break;
+        case NEW:
+            new_file(app_data);
+            break;
+        case OPEN:
+            file_open_dialog(app_data);
+            break;
+        default:
+            break;
+    }
+
+    app_data->unsaved_type = NONE;
+}
+
 static void file_open_dialog_finish(GObject* const object, GAsyncResult* const async_result, const gpointer data)
 {
     struct AppData* const app_data = data;
-    
-    GFile* const file = gtk_file_dialog_open_finish(GTK_FILE_DIALOG(object), async_result, NULL);
-    open_file(file, app_data);
+    open_file(gtk_file_dialog_open_finish(GTK_FILE_DIALOG(object), async_result, NULL), app_data);
+}
+
+static void file_save_as_dialog_finish(GObject* const object, GAsyncResult* const async_result, const gpointer data)
+{
+    struct AppData* const app_data = data;
+
+    if (save_as_file(gtk_file_dialog_save_finish(GTK_FILE_DIALOG(object), async_result, NULL), app_data) && app_data->unsaved_type != NONE)
+    {
+        unsaved_action(app_data);
+    }
 }
 
 static void file_unsaved_dialog_finished(GObject* const object, GAsyncResult* const async_result, const gpointer data)
 {
     struct AppData* const app_data = data;
-    int result = gtk_alert_dialog_choose_finish(GTK_ALERT_DIALOG(object), async_result, NULL);
+    const int result = gtk_alert_dialog_choose_finish(GTK_ALERT_DIALOG(object), async_result, NULL);
     
     if (result == 0 || result == 1)
     {
         if (result == 0)
         {
-            const bool file_saved = save_file(app_data);
-
-            if (!file_saved)
+            if (g_str_equal(app_data->file_name, "") || g_str_equal(app_data->file_path, ""))
             {
+                file_save_as_dialog(app_data);
                 return;
+            }
+            else
+            {
+                char* const full_path = g_strconcat(app_data->file_path, "/", app_data->file_name, NULL);
+                GFile* const file = g_file_new_for_path(full_path);
+                const bool file_saved = save_file(file, app_data);
+
+                g_free(full_path);
+
+                if (!file_saved)
+                {
+                    return;
+                }
+                else
+                {
+                    g_free(app_data->file_content);
+                    app_data->file_content = get_buffer_text(app_data);
+                }
             }
         }
 
-        switch (app_data->unsaved_type)
-        {
-            case CLOSE:
-                exit(EXIT_SUCCESS);
-                break;
-            case NEW:
-                new_file(app_data);
-                break;
-            case OPEN:
-                file_open_dialog(app_data);
-                break;
-            default:
-                break;
-        }
-
-        app_data->unsaved_type = NONE;
+        unsaved_action(app_data);
     }
 }
 
@@ -49,6 +79,14 @@ void file_open_dialog(struct AppData* const app_data)
 {
     GtkFileDialog* const file_dialog = gtk_file_dialog_new();
     gtk_file_dialog_open(file_dialog, app_data->window, NULL, file_open_dialog_finish, app_data);
+
+    g_object_unref(file_dialog);
+}
+
+void file_save_as_dialog(struct AppData* const app_data)
+{
+    GtkFileDialog* const file_dialog = gtk_file_dialog_new();
+    gtk_file_dialog_save(file_dialog, app_data->window, NULL, file_save_as_dialog_finish, app_data);
 
     g_object_unref(file_dialog);
 }
