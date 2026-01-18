@@ -31,6 +31,20 @@ static void file_open(GSimpleAction* const action, GVariant* const param, const 
     }
 }
 
+static void file_reload(GSimpleAction* const action, GVariant* const param, const gpointer data)
+{
+    struct AppData* const app_data = data;
+
+    if (!g_str_equal(app_data->file_name, "") && !g_str_equal(app_data->file_path, ""))
+    {
+        char* const full_path = g_strconcat(app_data->file_path, "/", app_data->file_name, NULL);
+        GFile* const file = g_file_new_for_path(full_path);
+
+        open_file(file, app_data);
+        g_free(full_path);
+    }
+}
+
 static void file_save(GSimpleAction* const action, GVariant* const param, const gpointer data)
 {
     struct AppData* const app_data = data;
@@ -70,6 +84,7 @@ void init_file_menu(GtkApplication* const app, struct AppData* const app_data)
     const GActionEntry action_entries[] = {
         { "file-new", file_new, NULL, NULL, NULL },
         { "file-open", file_open, NULL, NULL, NULL },
+        { "file-reload", file_reload, NULL, NULL, NULL },
         { "file-save", file_save, NULL, NULL, NULL },
         { "file-save-as", file_save_as, NULL, NULL, NULL }
     };
