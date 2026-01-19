@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
     <object id="main_window" class="GtkWindow">
-        <property name="title">NEdit</property>
         <property name="default-width">640</property>
         <property name="default-height">480</property>
 

@@ -17,4 +17,4 @@ struct AppData
     enum UnsavedType unsaved_type;
 };
 
-void set_app_data(struct AppData* const app_data, char* const file_name, char* const file_path, char* const file_content);
+void set_app_data(char* const file_name, char* const file_path, char* const file_content, struct AppData* const app_data);

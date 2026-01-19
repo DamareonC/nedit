@@ -94,8 +94,9 @@ void init_file_menu(GtkApplication* const app, struct AppData* const app_data)
 
 void new_file(struct AppData* const app_data)
 {
-    set_app_data(app_data, g_malloc0(sizeof(char)), g_malloc0(sizeof(char)), g_malloc0(sizeof(char)));
+    set_app_data(g_malloc0(sizeof(char)), g_malloc0(sizeof(char)), g_malloc0(sizeof(char)), app_data);
     gtk_text_buffer_set_text(app_data->text_buffer, "", 0);
+    gtk_window_set_title(app_data->window, "NEdit - <unnamed>");
 }
 
 void open_file(GFile* const file, struct AppData* const app_data)
@@ -109,8 +110,9 @@ void open_file(GFile* const file, struct AppData* const app_data)
         {
             GFile* const parent = g_file_get_parent(file);
 
-            set_app_data(app_data, g_file_get_basename(file), g_file_get_path(parent), content);
+            set_app_data(g_file_get_basename(file), g_file_get_path(parent), content, app_data);
             gtk_text_buffer_set_text(app_data->text_buffer, content, length);
+            gtk_window_set_title(app_data->window, g_strdup_printf("NEdit - %s", app_data->file_name));
 
             g_object_unref(parent);
         }
@@ -134,6 +136,7 @@ bool save_file(GFile* const file, const struct AppData* const app_data)
     
     if (g_file_replace_contents(file, buffered_file_content, content_length, NULL, false, G_FILE_CREATE_NONE, NULL, NULL, NULL))
     {
+        gtk_window_set_title(app_data->window, g_strdup_printf("NEdit - %s", app_data->file_name));
         result = true;
     }
     else
@@ -155,7 +158,7 @@ bool save_as_file(GFile* const file, struct AppData* const app_data)
     if (file)
     {
         GFile* const parent = g_file_get_parent(file);
-        set_app_data(app_data, g_file_get_basename(file), g_file_get_path(parent), get_buffer_text(app_data));
+        set_app_data(g_file_get_basename(file), g_file_get_path(parent), get_buffer_text(app_data), app_data);
 
         g_object_unref(parent);
         return save_file(file, app_data);
