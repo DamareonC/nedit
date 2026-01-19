@@ -1,5 +1,5 @@
-#include "Dialog.h"
-#include "FileUtil.h"
+#include "dialog.h"
+#include "file_util.h"
 
 static void file_new(GSimpleAction* const action, GVariant* const param, const gpointer data)
 {

@@ -1,4 +1,4 @@
-#include "AppData.h"
+#include "app_data.h"
 
 static void set_data(char** data, char* const string)
 {

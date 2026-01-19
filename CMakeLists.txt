@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(NEdit
+project(nedit
     LANGUAGES C 
     VERSION 1.0.0
     DESCRIPTION "Text editor made with GTK4"
@@ -18,10 +18,10 @@ link_directories(${GTK4_LIBRARY_DIRS})
 add_definitions(${GTK4_CFLAGS_OTHER})
 
 add_executable(${PROJECT_NAME}
-    ${CMAKE_SOURCE_DIR}/src/AppData.c
-    ${CMAKE_SOURCE_DIR}/src/Dialog.c
-    ${CMAKE_SOURCE_DIR}/src/FileUtil.c
-    ${CMAKE_SOURCE_DIR}/src/Main.c
+    ${CMAKE_SOURCE_DIR}/src/app_data.c
+    ${CMAKE_SOURCE_DIR}/src/dialog.c
+    ${CMAKE_SOURCE_DIR}/src/file_util.c
+    ${CMAKE_SOURCE_DIR}/src/main.c
 )
 
 target_link_libraries(${PROJECT_NAME} ${GTK4_LIBRARIES})

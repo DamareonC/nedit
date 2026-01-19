@@ -1,5 +1,5 @@
-#include "Dialog.h"
-#include "FileUtil.h"
+#include "dialog.h"
+#include "file_util.h"
 
 static void unsaved_action(struct AppData* const app_data)
 {
