@@ -41,6 +41,8 @@ static void file_reload(GSimpleAction* const action, GVariant* const param, cons
         GFile* const file = g_file_new_for_path(full_path);
 
         open_file(file, app_data);
+
+        g_object_unref(file);
         g_free(full_path);
     }
 }
@@ -69,6 +71,7 @@ static void file_save(GSimpleAction* const action, GVariant* const param, const 
             app_data->file_content = get_buffer_text(app_data);
         }
 
+        g_object_unref(file);
         g_free(full_path);
     }
 }
@@ -123,8 +126,6 @@ void open_file(GFile* const file, struct AppData* const app_data)
             
             g_object_unref(alert_dialog);
         }
-    
-        g_object_unref(file);
     }
 }
 
@@ -149,7 +150,6 @@ bool save_file(GFile* const file, const struct AppData* const app_data)
     }
 
     g_free(buffered_file_content);
-    g_object_unref(file);
     return result;
 }
 

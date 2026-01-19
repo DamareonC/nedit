@@ -24,17 +24,25 @@ static void unsaved_action(struct AppData* const app_data)
 static void file_open_dialog_finish(GObject* const object, GAsyncResult* const async_result, const gpointer data)
 {
     struct AppData* const app_data = data;
-    open_file(gtk_file_dialog_open_finish(GTK_FILE_DIALOG(object), async_result, NULL), app_data);
+
+    GFile* const file = gtk_file_dialog_open_finish(GTK_FILE_DIALOG(object), async_result, NULL);
+    open_file(file, app_data);
+
+    g_object_unref(file);
 }
 
 static void file_save_as_dialog_finish(GObject* const object, GAsyncResult* const async_result, const gpointer data)
 {
     struct AppData* const app_data = data;
 
-    if (save_as_file(gtk_file_dialog_save_finish(GTK_FILE_DIALOG(object), async_result, NULL), app_data) && app_data->unsaved_type != NONE)
+    GFile* const file = gtk_file_dialog_save_finish(GTK_FILE_DIALOG(object), async_result, NULL);
+
+    if (save_as_file(file, app_data) && app_data->unsaved_type != NONE)
     {
         unsaved_action(app_data);
     }
+
+    g_object_unref(file);
 }
 
 static void file_unsaved_dialog_finished(GObject* const object, GAsyncResult* const async_result, const gpointer data)
@@ -57,6 +65,7 @@ static void file_unsaved_dialog_finished(GObject* const object, GAsyncResult* co
                 GFile* const file = g_file_new_for_path(full_path);
                 const bool file_saved = save_file(file, app_data);
 
+                g_object_unref(file);
                 g_free(full_path);
 
                 if (!file_saved)

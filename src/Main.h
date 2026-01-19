@@ -26,7 +26,7 @@ static void changed(const GtkTextBuffer* const text_buffer, const gpointer data)
     gtk_window_set_title(app_data->window, g_strdup_printf("NEdit - %s%s", g_str_equal(app_data->file_name, "") ? "<unnamed>" : app_data->file_name, is_unsaved(app_data) ? "*" : ""));
 }
 
-static void init_app(GtkApplication* const app, const gpointer data)
+static void start(GtkApplication* const app, const gpointer data)
 {
     GtkBuilder* const builder = gtk_builder_new();
     gtk_builder_add_from_file(builder, "res/main_window.ui", NULL);
@@ -45,4 +45,17 @@ static void init_app(GtkApplication* const app, const gpointer data)
     init_file_menu(app, app_data);
 
     g_object_unref(builder);
+}
+
+static void start_with_files(GtkApplication* const app, const gpointer files, const gint n_files, const gchar* const hint, const gpointer data)
+{
+    start(app, data);
+
+    struct AppData* const app_data = data;
+
+    if (n_files > 0)
+    {
+        GFile** const g_files = files;
+        open_file(g_files[0], app_data);
+    }
 }
