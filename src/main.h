@@ -33,7 +33,6 @@ static void changed(const GtkTextBuffer* const text_buffer, const gpointer data)
 static void start(GtkApplication* const app, const gpointer data)
 {
     GtkBuilder* const builder = gtk_builder_new_from_string(main_window_ui, -1);
-
     GtkWindow* const main_window = GTK_WINDOW(gtk_builder_get_object(builder, "main_window"));
     gtk_window_set_application(main_window, app);
     gtk_window_present(main_window);

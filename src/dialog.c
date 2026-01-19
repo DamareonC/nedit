@@ -1,7 +1,7 @@
 #include "dialog.h"
 #include "file_util.h"
 
-static void unsaved_action(struct AppData* const app_data)
+static void post_file_unsaved_dialog(struct AppData* const app_data)
 {
     switch (app_data->unsaved_type)
     {
@@ -24,25 +24,29 @@ static void unsaved_action(struct AppData* const app_data)
 static void file_open_dialog_finish(GObject* const object, GAsyncResult* const async_result, const gpointer data)
 {
     struct AppData* const app_data = data;
-
     GFile* const file = gtk_file_dialog_open_finish(GTK_FILE_DIALOG(object), async_result, NULL);
-    open_file(file, app_data);
 
-    g_object_unref(file);
+    if (file)
+    {
+        open_file(file, app_data);
+        g_object_unref(file);
+    }
 }
 
 static void file_save_as_dialog_finish(GObject* const object, GAsyncResult* const async_result, const gpointer data)
 {
     struct AppData* const app_data = data;
-
     GFile* const file = gtk_file_dialog_save_finish(GTK_FILE_DIALOG(object), async_result, NULL);
 
-    if (save_as_file(file, app_data) && app_data->unsaved_type != NONE)
+    if (file)
     {
-        unsaved_action(app_data);
-    }
+        if (save_as_file(file, app_data) && app_data->unsaved_type != NONE)
+        {
+            post_file_unsaved_dialog(app_data);
+        }
 
-    g_object_unref(file);
+        g_object_unref(file);
+    }
 }
 
 static void file_unsaved_dialog_finished(GObject* const object, GAsyncResult* const async_result, const gpointer data)
@@ -80,7 +84,7 @@ static void file_unsaved_dialog_finished(GObject* const object, GAsyncResult* co
             }
         }
 
-        unsaved_action(app_data);
+        post_file_unsaved_dialog(app_data);
     }
 }
 

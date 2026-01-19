@@ -24,3 +24,9 @@ For NixOS, a `shell.nix` file containing all the requirements (except Git) is pr
 * Generate build files: `cmake -B build`
 * Build NEdit: `cmake --build build`
 * Run NEdit: `./build/nedit`
+
+### Installing
+
+NEdit can be installed via `cmake --install build` (may require root privileges). On Linux, NEdit will be located at `/usr/local/bin/nedit` by default.
+
+If you wish to package NEdit (e.g. as .tar.gz, .deb, .rpm, .AppImage and more) or create an installer script, run the `cpack` command in the `build` directory.
