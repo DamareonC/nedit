@@ -3,6 +3,10 @@
 #include "Dialog.h"
 #include "FileUtil.h"
 
+static const char main_window_ui[] = {
+    #embed "main_window.ui"
+};
+
 static gboolean close_request(const GtkWindow* const window, const gpointer data)
 {
     struct AppData* const app_data = data;
@@ -28,8 +32,7 @@ static void changed(const GtkTextBuffer* const text_buffer, const gpointer data)
 
 static void start(GtkApplication* const app, const gpointer data)
 {
-    GtkBuilder* const builder = gtk_builder_new();
-    gtk_builder_add_from_file(builder, "res/main_window.ui", NULL);
+    GtkBuilder* const builder = gtk_builder_new_from_string(main_window_ui, -1);
 
     GtkWindow* const main_window = GTK_WINDOW(gtk_builder_get_object(builder, "main_window"));
     gtk_window_set_application(main_window, app);

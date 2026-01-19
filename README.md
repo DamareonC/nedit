@@ -8,10 +8,10 @@ So far, NEdit (GTK) has only been built and tested on Linux.
 
 ### Requirements
 
-* C compiler (GCC or Clang)
+* C 23 compiler (GCC or Clang)
 * Build system (Make or Ninja)
 * pkg-config
-* [CMake](https://cmake.org/download/) (3.10 or later)
+* [CMake](https://cmake.org/download/) (3.21 or later)
 * [GTK4](https://www.gtk.org/docs/installations/) (for Linux, install the development package)
 * [Git](https://git-scm.com/downloads/)
 
@@ -23,4 +23,4 @@ For NixOS, a `shell.nix` file containing all the requirements (except Git) is pr
 * Move to NEdit directory: `cd nedit-gtk`
 * Generate build files: `cmake -B build`
 * Build NEdit: `cmake --build build`
-* Run NEdit: `./build/bin/NEdit`
+* Run NEdit: `./build/nedit`
