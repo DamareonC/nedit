@@ -3,7 +3,7 @@
 #include "dialog.h"
 #include "file_util.h"
 
-static const char main_window_ui[] = {
+static constexpr char main_window_ui[] = {
     #embed "main_window.ui"
 };
 

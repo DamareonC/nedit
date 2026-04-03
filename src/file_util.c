@@ -97,9 +97,9 @@ void init_file_menu(GtkApplication* const app, struct AppData* const app_data)
 
 void new_file(struct AppData* const app_data)
 {
+    set_app_data(g_malloc0(sizeof(char)), g_malloc0(sizeof(char)), g_malloc0(sizeof(char)), app_data);
     gtk_window_set_title(app_data->window, "NEdit - <unnamed>");
     gtk_text_buffer_set_text(app_data->text_buffer, "", 0);
-    set_app_data(g_malloc0(sizeof(char)), g_malloc0(sizeof(char)), g_malloc0(sizeof(char)), app_data);
 }
 
 void open_file(GFile* const file, struct AppData* const app_data)
@@ -113,9 +113,9 @@ void open_file(GFile* const file, struct AppData* const app_data)
         {
             GFile* const parent = g_file_get_parent(file);
 
+            set_app_data(g_file_get_basename(file), g_file_get_path(parent), content, app_data);
             gtk_window_set_title(app_data->window, g_strdup_printf("NEdit - %s", app_data->file_name));
             gtk_text_buffer_set_text(app_data->text_buffer, content, (int)length);
-            set_app_data(g_file_get_basename(file), g_file_get_path(parent), content, app_data);
 
             g_object_unref(parent);
         }

@@ -1,8 +1,8 @@
-# NEdit (GTK)
+# NEdit
 
-NEdit is a simple GUI text editor that allows you create, open, and save files. This implementation of NEdit is written in C and uses the GTK4 toolkit.
+NEdit is a simple GUI text editor that allows you to create, open, and save files. NEdit is written in C and uses the GTK toolkit.
 
-So far, NEdit (GTK) has only been built and tested on Linux.
+So far, NEdit has only been built and tested on Linux.
 
 ## Building from source
 
@@ -19,8 +19,8 @@ For NixOS, a `shell.nix` file containing all the requirements (except Git) is pr
 
 ### Building and Running
 
-* Clone NEdit: `git clone https://github.com/DamareonC/nedit-gtk.git`
-* Move to NEdit directory: `cd nedit-gtk`
+* Clone NEdit: `git clone https://github.com/DamareonC/nedit.git`
+* Move to NEdit directory: `cd nedit`
 * Generate build files: `cmake -B build`
 * Build NEdit: `cmake --build build`
 * Run NEdit: `./build/nedit`
@@ -29,4 +29,4 @@ For NixOS, a `shell.nix` file containing all the requirements (except Git) is pr
 
 NEdit can be installed via `cmake --install build` (may require root privileges). On Linux, NEdit will be located at `/usr/local/bin/nedit` by default.
 
-If you wish to package NEdit (e.g. as .tar.gz, .deb, .rpm, .AppImage and more) or create an installer script, run the `cpack` command in the `build` directory.
+If you wish to package NEdit (e.g. as tar.gz, deb, rpm, AppImage and more) or create an installer script, run the `cpack` command in the `build` directory.

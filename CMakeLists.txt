@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.21)
 project(nedit
     LANGUAGES C 
     VERSION 1.0.0
-    DESCRIPTION "Text editor made with GTK4"
+    DESCRIPTION "Text editor made with C and GTK"
 )
 
 set(CMAKE_C_STANDARD 23)
