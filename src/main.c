@@ -13,7 +13,7 @@ int main(const int argc, char* argv[])
     g_signal_connect(app, "activate", G_CALLBACK(start), &app_data);
     g_signal_connect(app, "open", G_CALLBACK(start_with_files), &app_data);
     const int status = g_application_run(G_APPLICATION(app), argc, argv);
-    
+
     g_object_unref(app);
     g_free(app_data.file_name);
     g_free(app_data.file_path);

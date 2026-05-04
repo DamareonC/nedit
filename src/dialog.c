@@ -35,9 +35,7 @@ static void file_save_as_dialog_finish(GObject* const object, GAsyncResult* cons
     GFile* const file = gtk_file_dialog_save_finish(GTK_FILE_DIALOG(object), async_result, nullptr);
 
     if (save_as_file(file, app_data) && app_data->unsaved_type != NONE)
-    {
         post_file_unsaved_dialog(app_data);
-    }
 
     g_object_unref(file);
 }
@@ -46,7 +44,7 @@ static void file_unsaved_dialog_finished(GObject* const object, GAsyncResult* co
 {
     struct AppData* const app_data = data;
     const int result = gtk_alert_dialog_choose_finish(GTK_ALERT_DIALOG(object), async_result, nullptr);
-    
+
     if (result == 0 || result == 1)
     {
         if (result == 0)
@@ -65,9 +63,7 @@ static void file_unsaved_dialog_finished(GObject* const object, GAsyncResult* co
             g_free(full_path);
 
             if (!file_saved)
-            {
                 return;
-            }
 
             g_free(app_data->file_content);
             app_data->file_content = get_buffer_text(app_data);
@@ -114,7 +110,7 @@ void file_unsaved_dialog(struct AppData* const app_data)
     }
 
     GtkAlertDialog* const alert_dialog = gtk_alert_dialog_new("There are unsaved changes in %s. Do you want to save changes before %s?", !g_str_equal(app_data->file_name, "") ? app_data->file_name : "<unnamed>", message);
-    const char* const buttons[] = { "Yes", "No", "Cancel", nullptr };
+    const char* const buttons[] = {"Yes", "No", "Cancel", nullptr};
     gtk_alert_dialog_set_buttons(alert_dialog, buttons);
     gtk_alert_dialog_set_default_button(alert_dialog, 0);
     gtk_alert_dialog_set_cancel_button(alert_dialog, 2);

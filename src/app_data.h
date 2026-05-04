@@ -4,7 +4,10 @@
 
 enum UnsavedType
 {
-    NONE = -1, CLOSE, NEW, OPEN
+    NONE = -1,
+    CLOSE,
+    NEW,
+    OPEN
 };
 
 struct AppData

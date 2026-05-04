@@ -1,10 +1,10 @@
-#include "dialog.h"
 #include "file_util.h"
+#include "dialog.h"
 
 static void file_new(GSimpleAction* const, GVariant* const, const gpointer data)
 {
     struct AppData* const app_data = data;
-    
+
     if (is_unsaved(app_data))
     {
         app_data->unsaved_type = NEW;
@@ -52,9 +52,7 @@ static void file_save(GSimpleAction* const, GVariant* const, const gpointer data
     struct AppData* const app_data = data;
 
     if (!is_unsaved(app_data))
-    {
         return;
-    }
 
     if (g_str_equal(app_data->file_name, "") || g_str_equal(app_data->file_path, ""))
     {
@@ -85,11 +83,11 @@ static void file_save_as(GSimpleAction* const, GVariant* const, const gpointer d
 void init_file_menu(GtkApplication* const app, struct AppData* const app_data)
 {
     const GActionEntry action_entries[] = {
-        { "file-new", file_new, nullptr, nullptr, nullptr },
-        { "file-open", file_open, nullptr, nullptr, nullptr },
-        { "file-reload", file_reload, nullptr, nullptr, nullptr },
-        { "file-save", file_save, nullptr, nullptr, nullptr },
-        { "file-save-as", file_save_as, nullptr, nullptr, nullptr }
+        {"file-new", file_new, nullptr, nullptr, nullptr},
+        {"file-open", file_open, nullptr, nullptr, nullptr},
+        {"file-reload", file_reload, nullptr, nullptr, nullptr},
+        {"file-save", file_save, nullptr, nullptr, nullptr},
+        {"file-save-as", file_save_as, nullptr, nullptr, nullptr}
     };
 
     g_action_map_add_action_entries(G_ACTION_MAP(app), action_entries, G_N_ELEMENTS(action_entries), app_data);
@@ -123,7 +121,7 @@ void open_file(GFile* const file, struct AppData* const app_data)
         {
             GtkAlertDialog* const alert_dialog = gtk_alert_dialog_new("Could not open the file.");
             gtk_alert_dialog_show(alert_dialog, app_data->window);
-            
+
             g_object_unref(alert_dialog);
         }
     }
@@ -134,7 +132,7 @@ bool save_file(GFile* const file, const struct AppData* const app_data)
     char* const buffered_file_content = get_buffer_text(app_data);
     const glong content_length = g_utf8_strlen(buffered_file_content, -1);
     bool result;
-    
+
     if (g_file_replace_contents(file, buffered_file_content, content_length, nullptr, false, G_FILE_CREATE_NONE, nullptr, nullptr, nullptr))
     {
         gtk_window_set_title(app_data->window, g_strdup_printf("NEdit - %s", app_data->file_name));
@@ -144,7 +142,7 @@ bool save_file(GFile* const file, const struct AppData* const app_data)
     {
         GtkAlertDialog* const alert_dialog = gtk_alert_dialog_new("Could not save the file.");
         gtk_alert_dialog_show(alert_dialog, app_data->window);
-        
+
         g_object_unref(alert_dialog);
         result = false;
     }
