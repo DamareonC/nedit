@@ -24,8 +24,8 @@ static gboolean close_request(const GtkWindow* const, const gpointer data)
 
 static void changed(const GtkTextBuffer* const, const gpointer data)
 {
-    const struct AppData* const app_data = data;
-    gtk_window_set_title(app_data->window, g_strdup_printf("NEdit - %s%s", g_str_equal(app_data->file_name, "") ? "<unnamed>" : app_data->file_name, is_unsaved(app_data) ? "*" : ""));
+    struct AppData* const app_data = data;
+    set_window_title(g_strdup_printf("NEdit - %s%s", g_str_equal(app_data->file_name, "") ? "<unnamed>" : app_data->file_name, is_unsaved(app_data) ? "*" : ""), app_data);
 }
 
 static void start(GtkApplication* const app, const gpointer data)
@@ -40,7 +40,7 @@ static void start(GtkApplication* const app, const gpointer data)
     app_data->text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(gtk_builder_get_object(builder, "file_text_view")));
     g_signal_connect(app_data->window, "close-request", G_CALLBACK(close_request), app_data);
     g_signal_connect(app_data->text_buffer, "changed", G_CALLBACK(changed), app_data);
-    gtk_window_set_title(app_data->window, g_strdup_printf("NEdit - %s", g_str_equal(app_data->file_name, "") ? "<unnamed>" : app_data->file_name));
+    set_window_title(g_strdup_printf("NEdit - %s", g_str_equal(app_data->file_name, "") ? "<unnamed>" : app_data->file_name), app_data);
 
     init_file_menu(app, app_data);
 

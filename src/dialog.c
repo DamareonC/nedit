@@ -26,7 +26,9 @@ static void file_open_dialog_finish(GObject* const object, GAsyncResult* const a
     GFile* const file = gtk_file_dialog_open_finish(GTK_FILE_DIALOG(object), async_result, nullptr);
 
     open_file(file, app_data);
-    g_object_unref(file);
+
+    if (file)
+        g_object_unref(file);
 }
 
 static void file_save_as_dialog_finish(GObject* const object, GAsyncResult* const async_result, const gpointer data)
@@ -37,7 +39,8 @@ static void file_save_as_dialog_finish(GObject* const object, GAsyncResult* cons
     if (save_as_file(file, app_data) && app_data->unsaved_type != NONE)
         post_file_unsaved_dialog(app_data);
 
-    g_object_unref(file);
+    if (file)
+        g_object_unref(file);
 }
 
 static void file_unsaved_dialog_finished(GObject* const object, GAsyncResult* const async_result, const gpointer data)
@@ -55,7 +58,7 @@ static void file_unsaved_dialog_finished(GObject* const object, GAsyncResult* co
                 return;
             }
 
-            char* const full_path = g_strconcat(app_data->file_path, "/", app_data->file_name, NULL);
+            char* const full_path = g_strconcat(app_data->file_path, "/", app_data->file_name, nullptr);
             GFile* const file = g_file_new_for_path(full_path);
             const bool file_saved = save_file(file, app_data);
 

@@ -3,6 +3,7 @@
 int main(const int argc, char* argv[])
 {
     struct AppData app_data = {
+        .window_title = g_malloc(sizeof(char)),
         .file_name = g_malloc0(sizeof(char)),
         .file_path = g_malloc0(sizeof(char)),
         .file_content = g_malloc0(sizeof(char)),
@@ -15,6 +16,7 @@ int main(const int argc, char* argv[])
     const int status = g_application_run(G_APPLICATION(app), argc, argv);
 
     g_object_unref(app);
+    g_free(app_data.window_title);
     g_free(app_data.file_name);
     g_free(app_data.file_path);
     g_free(app_data.file_content);

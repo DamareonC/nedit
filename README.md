@@ -9,7 +9,7 @@ So far, NEdit has only been built and tested on Linux.
 ### Requirements
 
 * C 23 compiler (GCC or Clang)
-* Build system (Make or Ninja)
+* Build system (Make or Ninja; Ninja is used in provided presets)
 * pkg-config
 * [CMake](https://cmake.org/download/) (3.21 or later)
 * [GTK4](https://www.gtk.org/docs/installations/) (for Linux, install the development package)
@@ -21,12 +21,16 @@ For NixOS, a `shell.nix` file containing all the requirements (except Git) is pr
 
 * Clone NEdit: `git clone https://github.com/DamareonC/nedit.git`
 * Move to NEdit directory: `cd nedit`
-* Generate build files: `cmake -B build`
+* Generate build files: `cmake -B build`*
 * Build NEdit: `cmake --build build`
 * Run NEdit: `./build/nedit`
 
+*Debug and Release presets are provided, and can be run with `cmake --preset debug` or `cmake --preset release` respectively
+
 ### Installing
 
-NEdit can be installed via `cmake --install build` (may require root privileges). On Linux, NEdit will be located at `/usr/local/bin/nedit` by default.
+NEdit can be installed via `cmake --install build`* (may require root privileges). On Linux, NEdit will be located at `/usr/local/bin/nedit` by default.
 
-If you wish to package NEdit (e.g. as tar.gz, deb, rpm, AppImage and more) or create an installer script, run the `cpack` command in the `build` directory.
+If you wish to package NEdit (e.g. as tar.gz, deb, rpm, AppImage and more) or create an installer script, run the `cpack` command in the `build`* directory.
+
+*If the Debug or Release presets was used, use `build/debug` or `build/release` (respectively) instead
