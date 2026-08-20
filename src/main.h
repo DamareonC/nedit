@@ -30,7 +30,7 @@ static void changed(const GtkTextBuffer* const, const gpointer data)
 
 static void start(GtkApplication* const app, const gpointer data)
 {
-    GtkBuilder* const builder = gtk_builder_new_from_string(main_window_ui, 3417);
+    GtkBuilder* const builder = gtk_builder_new_from_string(main_window_ui, -1); // NOTE: Debug preset using GCC seems to not put a null terminator after main_window_ui unlike Clang, making NEdit crash upon loading main_window.ui
     GObject* const main_window = gtk_builder_get_object(builder, "main_window");
     gtk_window_set_application(GTK_WINDOW(main_window), app);
     gtk_window_present(GTK_WINDOW(main_window));

@@ -8,14 +8,12 @@ So far, NEdit has only been built and tested on Linux.
 
 ### Requirements
 
-* C 23 compiler (GCC or Clang)
+* C 23 compiler (GCC or Clang; Clang is currently recommended for debugging)
 * Build system (Make or Ninja; Ninja is used in provided presets)
 * pkg-config
 * [CMake](https://cmake.org/download/) (3.21 or later)
 * [GTK4](https://www.gtk.org/docs/installations/) (for Linux, install the development package)
 * [Git](https://git-scm.com/downloads/)
-
-For NixOS, a `shell.nix` file containing all the requirements (except Git) is provided. Run `nix-shell` to load into the development environment.
 
 ### Building and Running
 

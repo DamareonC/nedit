@@ -83,11 +83,11 @@ static void file_save_as(GSimpleAction* const, GVariant* const, const gpointer d
 void init_file_menu(GtkApplication* const app, struct AppData* const app_data)
 {
     const GActionEntry action_entries[] = {
-        {"file-new", file_new, nullptr, nullptr, nullptr},
-        {"file-open", file_open, nullptr, nullptr, nullptr},
-        {"file-reload", file_reload, nullptr, nullptr, nullptr},
-        {"file-save", file_save, nullptr, nullptr, nullptr},
-        {"file-save-as", file_save_as, nullptr, nullptr, nullptr}
+        {.name = "file-new", .activate = file_new, .parameter_type = nullptr, .state = nullptr, .change_state = nullptr},
+        {.name = "file-open", .activate = file_open, .parameter_type = nullptr, .state = nullptr, .change_state = nullptr},
+        {.name = "file-reload", .activate = file_reload, .parameter_type = nullptr, .state = nullptr, .change_state = nullptr},
+        {.name = "file-save", .activate = file_save, .parameter_type = nullptr, .state = nullptr, .change_state = nullptr},
+        {.name = "file-save-as", .activate = file_save_as, .parameter_type = nullptr, .state = nullptr, .change_state = nullptr}
     };
 
     g_action_map_add_action_entries(G_ACTION_MAP(app), action_entries, G_N_ELEMENTS(action_entries), app_data);
@@ -107,7 +107,7 @@ void open_file(GFile* const file, struct AppData* const app_data)
 
     if (file)
     {
-        if (g_file_load_contents(file, nullptr, &content, &length, nullptr, nullptr))
+        if (g_file_load_contents(file, nullptr, &content, &length, nullptr, nullptr) && g_utf8_validate(content, (gssize)length, nullptr))
         {
             GFile* const parent = g_file_get_parent(file);
 
@@ -133,7 +133,7 @@ bool save_file(GFile* const file, struct AppData* const app_data)
     const glong content_length = g_utf8_strlen(buffered_file_content, -1);
     bool result;
 
-    if (g_file_replace_contents(file, buffered_file_content, content_length, nullptr, false, G_FILE_CREATE_NONE, nullptr, nullptr, nullptr))
+    if (g_file_replace_contents(file, buffered_file_content, content_length, nullptr, false, G_FILE_CREATE_NONE, nullptr, nullptr, nullptr) && g_utf8_validate(buffered_file_content, content_length, nullptr))
     {
         set_window_title(g_strdup_printf("NEdit - %s", app_data->file_name), app_data);
         result = true;

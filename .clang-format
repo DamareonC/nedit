@@ -11,7 +11,7 @@ BreakBeforeCloseBracketBracedList: true
 ColumnLimit: 0
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
-Cpp11BracedListStyle: true
+Cpp11BracedListStyle: FunctionCall
 IndentCaseLabels: true
 IndentPPDirectives: Leave
 IndentWidth: 4
@@ -19,6 +19,6 @@ InsertBraces: true
 InsertNewlineAtEOF: false
 MaxEmptyLinesToKeep: 1
 PointerAlignment: Left
-SortIncludes: true
+SortIncludes: CaseSensitive
 SpaceBeforeParens: ControlStatements
 TabWidth: 4
