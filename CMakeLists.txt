@@ -11,11 +11,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTK4 REQUIRED gtk4)
-
-include_directories(${GTK4_INCLUDE_DIRS})
-link_directories(${GTK4_LIBRARY_DIRS})
-add_definitions(${GTK4_CFLAGS_OTHER})
+pkg_check_modules(GTK4 REQUIRED IMPORTED_TARGET gtk4)
 
 add_executable(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/src/app_data.c
@@ -24,7 +20,7 @@ add_executable(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/src/main.c
 )
 
-target_link_libraries(${PROJECT_NAME} ${GTK4_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE PkgConfig::GTK4)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME)
 

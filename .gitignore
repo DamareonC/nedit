@@ -76,3 +76,4 @@ CMakeUserPresets.json
 
 /build
 /.vscode
+/.idea
