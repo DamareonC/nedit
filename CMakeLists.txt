@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 4.1)
 
 project(nedit
     LANGUAGES C 
@@ -10,8 +10,7 @@ set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTK4 REQUIRED IMPORTED_TARGET gtk4)
+cmake_pkg_config(IMPORT gtk4 REQUIRED NAME GTK4)
 
 add_executable(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/src/app_data.c
