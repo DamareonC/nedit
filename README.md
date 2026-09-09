@@ -9,7 +9,7 @@ So far, NEdit has only been built and tested on Linux.
 ### Requirements
 
 * C 23 compiler (GCC or Clang; Clang is currently recommended for debugging)
-* Build system (Make or Ninja; Ninja is used in provided presets)
+* Build system (Make or Ninja; Ninja Multi-Config is used in provided preset)
 * [CMake](https://cmake.org/download/) (4.1 or later)
 * [GTK4](https://www.gtk.org/docs/installations/) (for Linux, install the development package)
 * [Git](https://git-scm.com/downloads/)
@@ -18,16 +18,12 @@ So far, NEdit has only been built and tested on Linux.
 
 * Clone NEdit: `git clone https://github.com/DamareonC/nedit.git`
 * Move to NEdit directory: `cd nedit`
-* Generate build files: `cmake -B build`*
-* Build NEdit: `cmake --build build`
-* Run NEdit: `./build/nedit`
-
-*Debug and Release presets are provided, and can be run with `cmake --preset debug` or `cmake --preset release` respectively
+* Generate build files: `cmake --preset ninja-mc`
+* Build NEdit: `cmake --build build` (Debug build is default; pass in `--config Release` for Release build)
+* Run NEdit: `./build/Debug/nedit` or `./build/Release/nedit`
 
 ### Installing
 
-NEdit can be installed via `cmake --install build`* (may require root privileges). On Linux, NEdit will be located at `/usr/local/bin/nedit` by default.
+NEdit can be installed via `cmake --install build --config Release --strip` (may require root privileges). On Linux, NEdit will be located at `/usr/local/bin/nedit` by default (this can be changed with the `--prefix` flag, e.g. `--prefix /usr/bin`).
 
-If you wish to package NEdit (e.g. as tar.gz, deb, rpm, AppImage and more) or create an installer script, run the `cpack` command in the `build`* directory.
-
-*If the Debug or Release presets was used, use `build/debug` or `build/release` (respectively) instead
+If you wish to package NEdit (e.g. as tar.gz, deb, rpm, AppImage and more) or create an installer script, run the `cpack -C Release` command in the `build` directory.

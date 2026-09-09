@@ -7,50 +7,30 @@
     },
     "configurePresets": [
         {
-            "name": "default",
-            "hidden": true,
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/${presetName}"
-        },
-        {
-            "name": "debug",
-            "inherits": "default",
-            "displayName": "Debug",
-            "description": "Debug build using Ninja generator",
+            "name": "ninja-mc",
+            "displayName": "Ninja Multi-Config",
+            "description": "Build using Ninja Multi-Config",
+            "generator": "Ninja Multi-Config",
+            "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            }
-        },
-        {
-            "name": "release",
-            "inherits": "default",
-            "displayName": "Release",
-            "description": "Release build using Ninja generator",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
+                "CMAKE_CONFIGURATION_TYPES": "Debug;Release"
             }
         }
     ],
     "buildPresets": [
         {
-            "name": "default",
-            "hidden": true,
-            "configurePreset": "default",
+            "name": "debug",
+            "displayName": "Debug",
+            "configurePreset": "ninja-mc",
+            "configuration": "Debug",
             "jobs": 0
         },
         {
-            "name": "debug",
-            "inherits": "default",
-            "displayName": "Debug",
-            "configurePreset": "debug",
-            "configuration": "Debug"
-        },
-        {
             "name": "release",
-            "inherits": "default",
             "displayName": "Release",
-            "configurePreset": "release",
-            "configuration": "Release"
+            "configurePreset": "ninja-mc",
+            "configuration": "Release",
+            "jobs": 0
         }
     ]
 }
