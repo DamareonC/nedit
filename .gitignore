@@ -77,3 +77,4 @@ CMakeUserPresets.json
 /build
 /.vscode
 /.idea
+/.qtcreator

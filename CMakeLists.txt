@@ -14,9 +14,14 @@ cmake_pkg_config(IMPORT gtk4 REQUIRED NAME GTK4)
 
 add_executable(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/src/app_data.c
+    ${CMAKE_SOURCE_DIR}/src/app_data.h
     ${CMAKE_SOURCE_DIR}/src/dialog.c
+    ${CMAKE_SOURCE_DIR}/src/dialog.h
     ${CMAKE_SOURCE_DIR}/src/file_util.c
+    ${CMAKE_SOURCE_DIR}/src/file_util.h
     ${CMAKE_SOURCE_DIR}/src/main.c
+    ${CMAKE_SOURCE_DIR}/src/main.h
+    ${CMAKE_SOURCE_DIR}/src/main_window.ui
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE PkgConfig::GTK4)
@@ -30,5 +35,6 @@ set(CPACK_SYSTEM_NAME ${CMAKE_SYSTEM_NAME})
 set(CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR})
 set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE.md)
 set(CPACK_RESOURCE_FILE_README ${CMAKE_SOURCE_DIR}/README.md)
+set(CPACK_STRIP_FILES TRUE)
 
 include(CPack)

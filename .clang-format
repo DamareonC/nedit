@@ -16,7 +16,6 @@ IndentCaseLabels: true
 IndentPPDirectives: Leave
 IndentWidth: 4
 InsertBraces: true
-InsertNewlineAtEOF: false
 MaxEmptyLinesToKeep: 1
 PointerAlignment: Left
 SortIncludes: CaseSensitive

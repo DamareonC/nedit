@@ -5,11 +5,11 @@
         <property name="default-height">480</property>
 
         <child>
-            <object id="main_box" class="GtkBox">
+            <object class="GtkBox">
                 <property name="orientation">GTK_ORIENTATION_VERTICAL</property>
 
                 <child>
-                    <object id="menu_box" class="GtkBox">
+                    <object class="GtkBox">
                         <child>
                             <object class="GtkMenuButton">
                                 <property name="label">File</property>
